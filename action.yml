@@ -1,5 +1,5 @@
 name: 'itential-automation-status'
-description: 'Action to Itential Automation Platform(IAP) automations status and output variables'
+description: 'Action to monitor Itential Automation Platform(IAP) automations status and return output variables'
 author: 'Itential'
 branding:
   icon: 'activity'

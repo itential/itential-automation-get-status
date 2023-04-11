@@ -1,0 +1,31 @@
+name: 'Get Job Status'
+description: 'A JavaScript action to get job status and its results'
+author: 'Itential'
+branding:
+  icon: 'activity'
+  color: 'blue'
+inputs:
+  IAP_INSTANCE:
+    description: 'IAP Instance to run workflow'
+    required: true
+  IAP_TOKEN:
+    description: 'IAP Instance token to authorize'
+    required: true
+  JOB_ID:
+    description: 'Job ID to check status of the job'
+    required: true
+  TIME_INTERVAL:
+    description: 'Time interval to check job status'
+    default: '15'
+  NO_OF_ATTEMPTS:
+    description: 'No of attempts to check job status'
+    default: '10'
+
+outputs:
+  results: 
+    description: 'API Trigger output variables'
+
+runs:
+  using: 'node16'
+  main: 'dist/index.js'
+

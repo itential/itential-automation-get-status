@@ -11,7 +11,7 @@
   - [Example Usage](#example-usage)
 
 ## Overview 
-This Javascript Action monitors IAP Job Status and returns Job output variables.
+Github Action to monitor Itential Automation Platform(IAP) automations status and return output variables
 
 ## Supported IAP Versions
 * IAP 2022.1

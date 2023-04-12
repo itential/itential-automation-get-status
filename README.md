@@ -2,7 +2,6 @@
 Github Action to monitor Itential Automation Platform(IAP) automations status and return output variables
 
 ## Table of Contents 
-  - [Prerequisites](#prerequisites)
   - [Supported IAP Versions](#supported-iap-versions)
   - [Getting Started](#getting-started)
   - [Configurations](#configurations)
@@ -92,7 +91,7 @@ jobs:
         uses: actions/checkout@v3
       - name: Hello world action step
         id: step1
-        uses: itential/test-action@version
+        uses: itential/itential-automation-status@version
         env:
           IAP_TOKEN: ${{secrets.IAP_TOKEN}}
           IAP_INSTANCE: ${{secrets.IAP_INSTANCE}}

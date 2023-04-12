@@ -1,3 +1,6 @@
+## Overview 
+Github Action to monitor Itential Automation Platform(IAP) automations status and return output variables
+
 ## Table of Contents 
   - [Overview](#overview)
   - [Prerequisites](#prerequisites)
@@ -8,9 +11,6 @@
     - [Optional Input Parameters](#optional-input-parameters)
     - [Output](#output)
   - [Example Usage](#example-usage)
-
-## Overview 
-Github Action to monitor Itential Automation Platform(IAP) automations status and return output variables
 
 ## Supported IAP Versions
 * 2022.1

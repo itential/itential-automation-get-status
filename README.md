@@ -2,7 +2,6 @@
 Github Action to monitor Itential Automation Platform(IAP) automations status and return output variables
 
 ## Table of Contents 
-  - [Overview](#overview)
   - [Prerequisites](#prerequisites)
   - [Supported IAP Versions](#supported-iap-versions)
   - [Getting Started](#getting-started)

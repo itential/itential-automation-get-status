@@ -9110,6 +9110,7 @@ async function run() {
   const TIME_INTERVAL = getInput("TIME_INTERVAL");
   const NO_OF_ATTEMPTS = getInput("NO_OF_ATTEMPTS");
   const JOB_ID = getInput("JOB_ID");
+  let IAP_INSTANCE = getInput("IAP_INSTANCE");
   if (IAP_INSTANCE.endsWith('/'))
     IAP_INSTANCE = IAP_INSTANCE.substring(0, IAP_INSTANCE.length - 1);
   let count = 0;

@@ -2,7 +2,6 @@
   - [Overview](#overview)
   - [Prerequisites](#prerequisites)
   - [Supported IAP Versions](#supported-iap-versions)
-  - [APIs Used In Action](#apis-used-in-action)
   - [Getting Started](#getting-started)
   - [Configurations](#configurations)
     - [Required Input Parameters](#required-input-parameters)
@@ -14,23 +13,9 @@
 Github Action to monitor Itential Automation Platform(IAP) automations status and return output variables
 
 ## Supported IAP Versions
-* IAP 2022.1
-
-* IAP 2021.2
-
-* IAP 2021.1
-
-## APIs Used In Action 
-
-GET /health/server
-
-- ### IAP Release <= 2021.1
-        GET /workflow_engine/job/:job_id/details
-
-        GET /workflow_engine/job/:job_id/output
-
-- ### IAP Release > 2021.1
-        GET /operations-manager/jobs/:id
+* 2022.1
+* 2021.2
+* 2021.1
 
 ## Getting Started
 1. Search for the Action on Github Marketplace.

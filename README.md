@@ -1,4 +1,4 @@
-## Overview 
+# Itential Automation Status 
 Github Action to monitor Itential Automation Platform(IAP) automations status and return output variables
 
 ## Table of Contents 

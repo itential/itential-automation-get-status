@@ -1,12 +1,13 @@
-import { getInput, setOutput, setFailed } from "@actions/core";
-import { get } from "axios";
+const { getInput, setOutput, setFailed } = require("@actions/core");
+const { get } = require('axios');
 
 async function run() {
   const IAP_TOKEN = getInput("IAP_TOKEN");
-  const IAP_INSTANCE = getInput("IAP_INSTANCE");
   const TIME_INTERVAL = getInput("TIME_INTERVAL");
   const NO_OF_ATTEMPTS = getInput("NO_OF_ATTEMPTS");
   const JOB_ID = getInput("JOB_ID");
+  if (IAP_INSTANCE.endsWith('/'))
+    IAP_INSTANCE = IAP_INSTANCE.substring(0, IAP_INSTANCE.length - 1);
   let count = 0;
 
   try {

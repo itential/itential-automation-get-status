@@ -30,8 +30,8 @@ Github Action to monitor Itential Automation Platform(IAP) automations status an
 2. Select the secrets and variables tab under security options 
 3. Click the "new repository secret"option on the top right of the screen 
 4. Enter the required fields 
-For YOUR_SECRET_NAME enter a required input. 
-For SECRET enter your desired variable. 
+For your_secret_name enter a required input. 
+For secret enter your desired variable. 
 6. Click "Add Secret"
 _See [action.yml](action.yml) for [metadata](https://docs.github.com/en/actions/creating-actions/metadata-syntax-for-github-actions) that defines the inputs, outputs, and runs configurations for this action._
 
@@ -40,17 +40,17 @@ The following table defines the required parameters to monitor IAP Job Status us
  
 | Parameter | Description |
 | --------- | ----------- |
-| IAP_INSTANCE | URL to the IAP Instance |
-| IAP_TOKEN | To authenticate api requests to the instance |
-| JOB_ID| Job ID to check status of the job |
+| iap_instance | URL to the IAP Instance |
+| iap_token | To authenticate api requests to the instance |
+| job_id| Job ID to check status of the job |
 
 ### Optional Input Parameters
 The following table defines parameters considered optional. 
 
 | Parameter | Description | Default |
 | --------- | ----------- | ------- |
-| TIME_INTERVAL | Time interval to check job status (in sec) | 15 sec |
-| NO_OF_ATTEMPTS | No of attempts to check job status | 10 |
+| time_interval | Time interval to check job status (in sec) | 15 sec |
+| no_of_attempts | No of attempts to check job status | 10 |
 
 ### Output
 The following table defines parameters that are returned. 
@@ -93,11 +93,11 @@ jobs:
         id: step1
         uses: itential/itential-automation-status@version
         env:
-          IAP_TOKEN: ${{secrets.IAP_TOKEN}}
-          IAP_INSTANCE: ${{secrets.IAP_INSTANCE}}
-          JOB_ID: ${{secrets.JOB_ID}}
-          NO_OF_ATTEMPTS: 10
-          TIME_INTERVAL: 15
+          iap_token: ${{secrets.iap_token}}
+          iap_instance: ${{secrets.iap_instance}}
+          job_id: ${{secrets.job_id}}
+          no_of_attempts: 10
+          time_interval: 15
       - name: Get output
         run: echo "${{steps.step1.outputs.results}}"
 ```

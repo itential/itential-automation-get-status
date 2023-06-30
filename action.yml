@@ -5,19 +5,19 @@ branding:
   icon: 'activity'
   color: 'blue'
 inputs:
-  IAP_INSTANCE:
+  iap_instance:
     description: 'Itential Automation Platform instance url'
     required: true
-  IAP_TOKEN:
+  iap_token:
     description: 'Token required to access IAP instance'
     required: true
-  JOB_ID:
+  job_id:
     description: 'Job ID to check status of the automation'
     required: true
-  TIME_INTERVAL:
+  time_interval:
     description: 'Time interval to check automation status'
     default: '15'
-  NO_OF_ATTEMPTS:
+  no_of_attempts:
     description: 'No. of attempts to check automation status'
     default: '10'
 

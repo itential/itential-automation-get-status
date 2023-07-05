@@ -33,7 +33,7 @@ jobs:
         with:
           iap_token: ${{secrets.IAP_TOKEN}}
           iap_instance: ${{secrets.IAP_INSTANCE}}
-          timeout: 60
+          time_interval: 60
           no_of_attempts: 200
           automation_id: ${{secrets.AUTOMATION_ID}}
       - name: Get output

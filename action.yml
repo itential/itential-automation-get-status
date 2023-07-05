@@ -11,15 +11,15 @@ inputs:
   iap_token:
     description: 'Token required to access IAP instance'
     required: true
-  job_id:
-    description: 'Job ID to check status of the automation'
+  automation_id:
+    description: ' Automation ID to check status of the automation'
     required: true
   time_interval:
     description: 'Time interval to check automation status'
-    default: '15'
+    default: '60'
   no_of_attempts:
     description: 'No. of attempts to check automation status'
-    default: '10'
+    default: '200'
 
 outputs:
   results: 

@@ -9455,6 +9455,7 @@ async function run() {
         .then((res) => {
           console.log("Automation Status: ", res.data.data.status);
           if (res.data.data.status === "running" && count < no_of_attempts) {
+            console.log("count: ", count);
             setTimeout(() => {
               count += 1;
               automationStatus221(automation_id);

@@ -1,9 +1,12 @@
 # This is a basic workflow to help you get started with Actions
-name: Get Job Results
+name: Get Automation Results
 # Controls when the workflow will run
 on:
   pull_request:
-    types: [opened]
+    types: 
+      - opened
+      - closed
+      - reopened
     
 jobs:
   job1:

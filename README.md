@@ -33,7 +33,8 @@ Github Action to monitor Itential Automation Platform(IAP) automations status an
 For YOUR_SECRET_NAME enter a required input. 
 For SECRET enter your desired variable. 
 6. Click "Add Secret"
-_See [action.yml](action.yml) for [metadata](https://docs.github.com/en/actions/creating-actions/metadata-syntax-for-github-actions) that defines the inputs, outputs, and runs configurations for this action._
+
+See [action.yml](action.yml) for [metadata](https://docs.github.com/en/actions/creating-actions/metadata-syntax-for-github-actions) that defines the inputs, outputs, and runs configurations for this action._
 
  ### Required Input Parameters
 The following table defines the required parameters to monitor IAP Automation Status using a Github workflow. Input data is provided through Github Actions secrets. For more information about github action secrets, see [Github Secrets](https://docs.github.com/en/rest/actions/secrets?apiVersion=2022-11-28)
@@ -92,7 +93,7 @@ jobs:
       - name: Hello world action step
         id: step1
         uses: itential/itential-automation-status@version
-        env:
+        with:
           iap_token: ${{secrets.IAP_TOKEN}}
           iap_instance: ${{secrets.IAP_INSTANCE}}
           automation_id: ${{secrets.AUTOMATION_ID}}

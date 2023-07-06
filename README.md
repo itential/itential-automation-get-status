@@ -30,27 +30,27 @@ Github Action to monitor Itential Automation Platform(IAP) automations status an
 2. Select the secrets and variables tab under security options 
 3. Click the "new repository secret"option on the top right of the screen 
 4. Enter the required fields 
-For your_secret_name enter a required input. 
-For secret enter your desired variable. 
+For YOUR_SECRET_NAME enter a required input. 
+For SECRET enter your desired variable. 
 6. Click "Add Secret"
 _See [action.yml](action.yml) for [metadata](https://docs.github.com/en/actions/creating-actions/metadata-syntax-for-github-actions) that defines the inputs, outputs, and runs configurations for this action._
 
  ### Required Input Parameters
-The following table defines the required parameters to monitor IAP Job Status using a Github workflow. Input data is provided through Github Actions secrets. For more information about github action secrets, see [Github Secrets](https://docs.github.com/en/rest/actions/secrets?apiVersion=2022-11-28)
+The following table defines the required parameters to monitor IAP Automation Status using a Github workflow. Input data is provided through Github Actions secrets. For more information about github action secrets, see [Github Secrets](https://docs.github.com/en/rest/actions/secrets?apiVersion=2022-11-28)
  
 | Parameter | Description |
 | --------- | ----------- |
 | iap_instance | URL to the IAP Instance |
 | iap_token | To authenticate api requests to the instance |
-| job_id| Job ID to check status of the job |
+| automation_id| Automation ID to check status of the automation |
 
 ### Optional Input Parameters
 The following table defines parameters considered optional. 
 
 | Parameter | Description | Default |
 | --------- | ----------- | ------- |
-| time_interval | Time interval to check job status (in sec) | 15 sec |
-| no_of_attempts | No of attempts to check job status | 10 |
+| time_interval | Time interval to check automation status (in sec) | 15 sec |
+| no_of_attempts | No of attempts to check automation status | 10 |
 
 ### Output
 The following table defines parameters that are returned. 
@@ -93,9 +93,9 @@ jobs:
         id: step1
         uses: itential/itential-automation-status@version
         env:
-          iap_token: ${{secrets.iap_token}}
-          iap_instance: ${{secrets.iap_instance}}
-          job_id: ${{secrets.job_id}}
+          iap_token: ${{secrets.IAP_TOKEN}}
+          iap_instance: ${{secrets.IAP_INSTANCE}}
+          automation_id: ${{secrets.AUTOMATION_ID}}
           no_of_attempts: 10
           time_interval: 15
       - name: Get output

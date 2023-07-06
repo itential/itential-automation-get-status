@@ -23,7 +23,7 @@ jobs:
         id: step1
         uses: ./
         #uses: itential/itential-automation-status@version
-        with:
+        env:
           iap_token: ${{secrets.IAP_TOKEN}}
           iap_instance: ${{secrets.IAP_INSTANCE}}
           automation_id: ${{secrets.AUTOMATION_ID}}

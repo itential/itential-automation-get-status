@@ -86,6 +86,7 @@ async function run() {
     const automationStatus221 = (automation_id) => {
 
       opsManager.getJobResult(automation_id, (res,err) => {
+        console.log("Running the integrated library");
         if (err){
           if (typeof err === "string") {
             setFailed(err);

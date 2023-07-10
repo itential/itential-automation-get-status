@@ -8,7 +8,7 @@ import { ItentialSDK } from "ea-utils/sdk.js";
 async function run() {
 
   //test variables
-  /*const iap_token = 'Yjc3Y2E5MDIwYTM5MDQzNDE2YTJjM2M4ZDFlMWQ1ZWU=';
+ /* const iap_token = 'MzRhNTFhMDczM2Q5OTVmNzk5ZGVlYTBjZGQxN2MyODY=';
   const time_interval = 15;
   const no_of_attempts = 10 ;
   const automation_id = '1586c4006b9f404cb491ed41';
@@ -16,6 +16,7 @@ async function run() {
   if (iap_instance.endsWith('/'))
     iap_instance = iap_instance.substring(0, iap_instance.length - 1);
   */
+  
 
   const iap_token = getInput("iap_token");
   const time_interval = getInput("time_interval");
@@ -38,7 +39,8 @@ async function run() {
   ]
 
   const authentication = new ItentialSDK.Authentication(user); 
-  const opsManager = new ItentialSDK.OperationsManagerAPI(iap_instance, iap_token, authentication);
+  const opsManager = new ItentialSDK.OperationsManagerAPI(authentication.users[0].hostname, authentication.users[0].userKey, authentication);
+  const health = new ItentialSDK.HealthAPI(authentication.users[0].hostname, authentication.users[0].userKey, authentication);
 
   try {
    //check the status of the automation and return the output (IAP release <= 2021.1)
@@ -119,24 +121,33 @@ async function run() {
 
     //start the automation on GitHub event
     const startAutomation = () => {
-      axios
-      .get(`${iap_instance}/health/server?token=` + iap_token)
-        .then((res) => {
-          const release = res.data.release.substring(
+
+      health.getServerHealth((res, err)=> {
+
+        console.log("checked the health");
+
+        if(err){
+          setFailed(err.response.data);
+        } else {
+
+          const release = res.release.substring(
             0,
-            res.data.release.lastIndexOf(".")
+            res.release.lastIndexOf(".")
           );
+
           if (Number(release) <= 2021.1) automationStatus211(automation_id);
           else automationStatus221(automation_id);
-        })
-        .catch((err) => {
-          setFailed(err);
-        });
+
+        }
+
+      });
+
     };
+
     startAutomation();
 
-  } catch (e) {
-    setFailed(e);
+  } catch (err) {
+    setFailed(err);
   }
 }
 

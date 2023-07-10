@@ -10880,6 +10880,10 @@ class Authentication {
         user.validity = valid; 
         // console.log(valid);
         if (valid) {
+
+          if (user.hostname.endsWith('/')){
+            user.hostname = user.hostname.substring(0, user.hostname.length - 1);
+          }
           if (user.authType.oAuth) {
             user.authId = `${user.hostname}_${user.client_id}`;
             user.token = '';
@@ -11229,6 +11233,40 @@ class OperationsManagerAPI {
       return callback(null, err);
     }
   }
+
+   /**
+   * Start an automation using an endpoint trigger
+   *
+   * @param {String} apiEndpoint -name of the endpoint trigger
+   * @param {JSON} apiEndpointBody -optional data to specifiy for the trigger
+   * @param {function callback(success, fail)} - a function that returns a success or fail message
+   */
+  async startJobEndpoint(apiEndpoint, apiEndpointBody = {}, callback) {
+
+    try {
+      let token = '';
+      await this.auth.getToken(`${this.baseURL}_${this.user}`, (theToken, error) => {
+        if (error) {
+          return callback(null, error);
+        }
+        token = theToken;
+      });
+
+      //handling input by user
+      if (apiEndpoint.startsWith('/')){
+        apiEndpoint= apiEndpoint.substring(1);
+      }
+      
+      const url = `${this.baseURL}/operations-manager/triggers/endpoint/${apiEndpoint}?token=${token}`;
+      const res = await lib_axios.post(url, apiEndpointBody);
+      return callback(res.data, null);
+      
+    } catch (err) {
+      return callback(null, err);
+    }
+
+  }
+
 }
 
 ;// CONCATENATED MODULE: ./node_modules/ea-utils/lib/transformationsAPI.js
@@ -11270,6 +11308,47 @@ class TransformationsAPI {
     }
   }
 }
+;// CONCATENATED MODULE: ./node_modules/ea-utils/lib/healthApi.js
+
+/**
+ * Class that utilizes Itential's API to obtain the Health status.
+ */
+class HealthAPI {
+
+    constructor(baseURL, user, auth) {
+        this.user = user;
+        this.baseURL = baseURL;
+        this.auth = auth;
+    }
+
+   /**
+   * Get the Server health
+   * Useful in identifying the IAP release
+   *  @param {function callback(success, fail)} - a function that returns a success or fail message
+   */
+
+    async getServerHealth(callback){
+        try {
+            let token = '';
+            await this.auth.getToken(`${this.baseURL}_${this.user}`, (theToken, error) => {
+                if (error) {
+                    return callback(null, error);
+                }
+                token = theToken;
+            });
+
+            const url = `${this.baseURL}/health/server?token=${token}`;
+            const res = await lib_axios.get(url);
+            return callback(res.data, null);
+            
+        } catch (err) {
+            return callback(null, err);
+        }
+       
+    }
+
+}
+
 ;// CONCATENATED MODULE: ./node_modules/ea-utils/sdk.js
 
 
@@ -11277,7 +11356,9 @@ class TransformationsAPI {
 
 
 
-const ItentialSDK = { Authentication: Authentication, GenericAPI: GenericAPI, JSONFormsAPI: JSONFormsAPI, OperationsManagerAPI: OperationsManagerAPI, TransformationsAPI: TransformationsAPI}
+
+
+const ItentialSDK = { Authentication: Authentication, GenericAPI: GenericAPI, JSONFormsAPI: JSONFormsAPI, OperationsManagerAPI: OperationsManagerAPI, TransformationsAPI: TransformationsAPI, HealthAPI: HealthAPI}
 ;// CONCATENATED MODULE: ./src/action.js
 //const { getInput, setOutput, setFailed } = require("@actions/core");
 
@@ -11289,7 +11370,7 @@ const ItentialSDK = { Authentication: Authentication, GenericAPI: GenericAPI, JS
 async function run() {
 
   //test variables
-  /*const iap_token = 'Yjc3Y2E5MDIwYTM5MDQzNDE2YTJjM2M4ZDFlMWQ1ZWU=';
+ /* const iap_token = 'MzRhNTFhMDczM2Q5OTVmNzk5ZGVlYTBjZGQxN2MyODY=';
   const time_interval = 15;
   const no_of_attempts = 10 ;
   const automation_id = '1586c4006b9f404cb491ed41';
@@ -11297,6 +11378,7 @@ async function run() {
   if (iap_instance.endsWith('/'))
     iap_instance = iap_instance.substring(0, iap_instance.length - 1);
   */
+  
 
   const iap_token = (0,core.getInput)("iap_token");
   const time_interval = (0,core.getInput)("time_interval");
@@ -11319,7 +11401,8 @@ async function run() {
   ]
 
   const authentication = new ItentialSDK.Authentication(user); 
-  const opsManager = new ItentialSDK.OperationsManagerAPI(iap_instance, iap_token, authentication);
+  const opsManager = new ItentialSDK.OperationsManagerAPI(authentication.users[0].hostname, authentication.users[0].userKey, authentication);
+  const health = new ItentialSDK.HealthAPI(authentication.users[0].hostname, authentication.users[0].userKey, authentication);
 
   try {
    //check the status of the automation and return the output (IAP release <= 2021.1)
@@ -11398,23 +11481,33 @@ async function run() {
 
     //start the automation on GitHub event
     const startAutomation = () => {
-      lib_axios.get(`${iap_instance}/health/server?token=` + iap_token)
-        .then((res) => {
-          const release = res.data.release.substring(
+
+      health.getServerHealth((res, err)=> {
+
+        console.log("checked the health");
+
+        if(err){
+          (0,core.setFailed)(err.response.data);
+        } else {
+
+          const release = res.release.substring(
             0,
-            res.data.release.lastIndexOf(".")
+            res.release.lastIndexOf(".")
           );
+
           if (Number(release) <= 2021.1) automationStatus211(automation_id);
           else automationStatus221(automation_id);
-        })
-        .catch((err) => {
-          (0,core.setFailed)(err);
-        });
+
+        }
+
+      });
+
     };
+
     startAutomation();
 
-  } catch (e) {
-    (0,core.setFailed)(e);
+  } catch (err) {
+    (0,core.setFailed)(err);
   }
 }
 

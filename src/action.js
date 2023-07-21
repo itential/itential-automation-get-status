@@ -8,16 +8,16 @@ import { ItentialSDK } from "ea-utils/sdk.js";
 async function run() {
 
   //test variables
- /* const iap_token = 'MzRhNTFhMDczM2Q5OTVmNzk5ZGVlYTBjZGQxN2MyODY=';
+  const iap_token = 'YjcwMTMwNmI1MDFiMzAzNTJjOWFiNzg2YTYxNjJkYTU=';
   const time_interval = 15;
   const no_of_attempts = 10 ;
   const automation_id = '1586c4006b9f404cb491ed41';
   let iap_instance = 'https://itential-se-poc-stg-221.trial.itential.io/';
   if (iap_instance.endsWith('/'))
     iap_instance = iap_instance.substring(0, iap_instance.length - 1);
-  */
   
-
+  
+/*
   const iap_token = getInput("iap_token");
   const time_interval = getInput("time_interval");
   const no_of_attempts = getInput("no_of_attempts");
@@ -25,6 +25,7 @@ async function run() {
   let iap_instance = getInput("iap_instance");
   if (iap_instance.endsWith('/'))
     iap_instance = iap_instance.substring(0, iap_instance.length - 1);
+    */
   
   let count = 0;
 
@@ -87,8 +88,8 @@ async function run() {
     //check the status of the automation and return the output (IAP release > 2021.1)
     const automationStatus221 = (automation_id) => {
 
-      opsManager.getJobResult(automation_id, (res,err) => {
-        console.log("Running the integrated library");
+      opsManager.getAutomationResult(automation_id, (res,err) => {
+        console.log("Running the updated integrated library");
         if (err){
           if (typeof err === "string") {
             setFailed(err);

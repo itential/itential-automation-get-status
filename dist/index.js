@@ -11392,7 +11392,6 @@ async function run() {
   if (iap_instance.endsWith('/'))
     iap_instance = iap_instance.substring(0, iap_instance.length - 1);
 
-  
   let count = 0;
 
   console.log(time_interval);

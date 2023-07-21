@@ -11364,34 +11364,32 @@ class HealthAPI {
 
 const ItentialSDK = { Authentication: Authentication, GenericAPI: GenericAPI, JSONFormsAPI: JSONFormsAPI, OperationsManagerAPI: OperationsManagerAPI, TransformationsAPI: TransformationsAPI, HealthAPI: HealthAPI}
 ;// CONCATENATED MODULE: ./src/action.js
-//const { getInput, setOutput, setFailed } = require("@actions/core");
 
-//const { get } = require('axios');
 
-//const { ItentialSDK } = require('ea-utils/sdk.js');
+
 
 
 async function run() {
 
   //test variables
-  /*const iap_token = 'YjcwMTMwNmI1MDFiMzAzNTJjOWFiNzg2YTYxNjJkYTU=';
+  const iap_token = 'YjcwMTMwNmI1MDFiMzAzNTJjOWFiNzg2YTYxNjJkYTU';
   const time_interval = 15;
   const no_of_attempts = 10 ;
   const automation_id = '1586c4006b9f404cb491ed41';
   let iap_instance = 'https://itential-se-poc-stg-221.trial.itential.io/';
   if (iap_instance.endsWith('/'))
     iap_instance = iap_instance.substring(0, iap_instance.length - 1);
-  */
+  
   
 
-  const iap_token = (0,core.getInput)("iap_token");
-  const time_interval = (0,core.getInput)("time_interval");
-  const no_of_attempts = (0,core.getInput)("no_of_attempts");
-  const automation_id = (0,core.getInput)("automation_id");
-  let iap_instance = (0,core.getInput)("iap_instance");
+  /*const iap_token = getInput("iap_token");
+  const time_interval = getInput("time_interval");
+  const no_of_attempts = getInput("no_of_attempts");
+  const automation_id = getInput("automation_id");
+  let iap_instance = getInput("iap_instance");
   if (iap_instance.endsWith('/'))
     iap_instance = iap_instance.substring(0, iap_instance.length - 1);
-
+*/
   let count = 0;
 
   console.log(time_interval);
@@ -11456,12 +11454,14 @@ async function run() {
 
       opsManager.getAutomationResult(automation_id, (res,err) => {
         console.log("Running the updated integrated library");
+
         if (err){
           if (typeof err === "string") {
             (0,core.setFailed)(err);
-          } else {
+          } else if(typeof err.response === "object") {
             (0,core.setFailed)(err.response.data);
-          }
+          } else (0,core.setFailed)("Failed while getting automation result:Please check the instance configuration and credentials");
+
         } else {
           console.log("Automation Status: ", res.status);
           if (res.status === "running" && count < no_of_attempts) {
@@ -11491,10 +11491,15 @@ async function run() {
 
       health.getServerHealth((res, err)=> {
 
-        console.log("checked the health");
+        console.log("Checked the Server health");
 
         if(err){
-          (0,core.setFailed)(err.response.data);
+          if(typeof err === "string"){
+           (0,core.setFailed)(err);
+          } else if(typeof err.response === "object") {
+            (0,core.setFailed)(err.response.data);
+          } else (0,core.setFailed)("Failed while checking server health: Please check the instance configuration and credentials");
+
         } else {
 
           const release = res.release.substring(

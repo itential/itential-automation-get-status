@@ -27,8 +27,8 @@ jobs:
           iap_token: ${{secrets.IAP_TOKEN}}
           iap_instance: ${{secrets.IAP_INSTANCE}}
           automation_id: ${{secrets.AUTOMATION_ID}}
-          no_of_attempts: 10
-          time_interval: 15
+          #no_of_attempts: 10
+          #time_interval: 15
       - name: Get output
         run: echo "${{steps.step1.outputs.results}}"
 

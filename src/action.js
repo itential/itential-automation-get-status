@@ -11,6 +11,9 @@ async function run() {
     iap_instance = iap_instance.substring(0, iap_instance.length - 1);
   let count = 0;
 
+  console.log(time_interval);
+  console.log(no_of_attempts);
+
   try {
     //check the status of the automation and return the output (IAP release <= 2021.1)
     const automationStatus211 = (automation_id) => {

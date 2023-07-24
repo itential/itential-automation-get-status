@@ -1,20 +1,8 @@
-
 import { getInput, setOutput, setFailed } from "@actions/core";
 import axios from 'axios';
 import { ItentialSDK } from "ea-utils/sdk.js";
 
 async function run() {
-
-  //test variables
- /* const iap_token = 'YjcwMTMwNmI1MDFiMzAzNTJjOWFiNzg2YTYxNjJkYTU';
-  const time_interval = 15;
-  const no_of_attempts = 10 ;
-  const automation_id = '1586c4006b9f404cb491ed41';
-  let iap_instance = 'https://itential-se-poc-stg-221.trial.itential.io/';
-  if (iap_instance.endsWith('/'))
-    iap_instance = iap_instance.substring(0, iap_instance.length - 1);
-  */
-  
 
   const iap_token = getInput("iap_token");
   const time_interval = getInput("time_interval");
@@ -25,9 +13,6 @@ async function run() {
     iap_instance = iap_instance.substring(0, iap_instance.length - 1);
 
   let count = 0;
-
-  console.log(time_interval);
-  console.log(no_of_attempts);
 
   //using the ea-utils library
   const user = [
@@ -89,14 +74,17 @@ async function run() {
     const automationStatus221 = (automation_id) => {
 
       opsManager.getAutomationResult(automation_id, (res,err) => {
-        console.log("Running the updated integrated library");
 
         if (err){
           if (typeof err === "string") {
             setFailed(err);
           } else if(typeof err.response === "object") {
             setFailed(err.response.data);
-          } else setFailed("Failed while getting automation result:Please check the instance configuration and credentials");
+          } else setFailed(`Failed while getting automation result:Please check the instance configuration and credentials. 
+          An Itential account is required to get credentials needed to configure the Github Actions.
+          In order to utilize this action, you would need to have an active \`Itential Automation Platform\` (IAP).
+          If you are an existing customer, please contact your Itential account team for additional details.
+          For new customers interested in an Itential trial, please click [here](https://www.itential.com/get-started/) to request one.`);
 
         } else {
           console.log("Automation Status: ", res.status);
@@ -134,7 +122,11 @@ async function run() {
            setFailed(err);
           } else if(typeof err.response === "object") {
             setFailed(err.response.data);
-          } else setFailed("Failed while checking server health: Please check the instance configuration and credentials");
+          } else setFailed(`Failed while checking server health: Please check the instance configuration and credentials. 
+          An Itential account is required to get credentials needed to configure the Github Actions.
+          In order to utilize this action, you would need to have an active \`Itential Automation Platform\` (IAP).
+          If you are an existing customer, please contact your Itential account team for additional details.
+          For new customers interested in an Itential trial, please click [here](https://www.itential.com/get-started/) to request one.`);
 
         } else {
 

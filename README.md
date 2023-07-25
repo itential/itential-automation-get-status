@@ -87,7 +87,7 @@ _For more information about workflows, see [Using workflows](https://docs.github
 
 ```yaml
 # This is a basic workflow to help you get started with Actions
-name: Get Automation Status
+name: Get Automation Status on pull request
 # Controls when the workflow will run
 on:
   pull_request:

@@ -4,7 +4,7 @@ Github Action to monitor Itential Automation Platform (IAP) automations status a
 
 ## Table of Contents
 
-- [Prerequisites] (#prerequisites)
+- [Prerequisites](#prerequisites)
 - [Supported IAP Versions](#supported-iap-versions)
 - [Getting Started](#getting-started)
 - [Configurations](#configurations)

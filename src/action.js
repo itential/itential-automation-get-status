@@ -89,7 +89,7 @@ async function run() {
         } else {
           console.log("Automation Status: ", res.status);
           if (res.status === "running" && count < no_of_attempts) {
-            console.log("count: ", count);
+            console.log("Attempt# ", count);
             setTimeout(() => {
               count += 1;
               automationStatus221(automation_id);

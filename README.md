@@ -43,8 +43,8 @@ For new customers interested in an Itential trial, please click [here](https://w
 2. Select the secrets and variables tab under security options.
 3. Click the "new repository secret"option on the top right of the screen.
 4. Enter the required fields.
-   For YOUR_SECRET_NAME enter a required input.
-   For SECRET enter your desired variable.
+  For YOUR_SECRET_NAME enter a required input.
+  For SECRET enter your desired variable.
 5. Click "Add Secret"
 
 See [action.yml](action.yml) for [metadata](https://docs.github.com/en/actions/creating-actions/metadata-syntax-for-github-actions) that defines the inputs, outputs, and runs configurations for this action.\_
@@ -104,7 +104,7 @@ jobs:
       # you must check out the repository
       - name: Checkout
         uses: actions/checkout@v3
-      - name: Hello world action step
+      - name: Get Automation status action step
         id: step1
         uses: itential/itential-automation-status@version
         with:

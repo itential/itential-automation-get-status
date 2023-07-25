@@ -12,7 +12,7 @@ inputs:
     description: 'Token required to access IAP instance'
     required: true
   automation_id:
-    description: ' Automation ID to check status of the automation'
+    description: 'Automation ID to check status of the automation'
     required: true
   time_interval:
     description: 'Time interval to check automation status'

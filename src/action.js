@@ -1,35 +1,53 @@
-const { getInput, setOutput, setFailed } = require("@actions/core");
-const { get } = require('axios');
+import { getInput, setOutput, setFailed } from "@actions/core";
+import axios from 'axios';
+import { ItentialSDK } from "ea-utils/sdk.js";
 
 async function run() {
-  const IAP_TOKEN = getInput("IAP_TOKEN");
-  const TIME_INTERVAL = getInput("TIME_INTERVAL");
-  const NO_OF_ATTEMPTS = getInput("NO_OF_ATTEMPTS");
-  const JOB_ID = getInput("JOB_ID");
-  let IAP_INSTANCE = getInput("IAP_INSTANCE");
-  if (IAP_INSTANCE.endsWith('/'))
-    IAP_INSTANCE = IAP_INSTANCE.substring(0, IAP_INSTANCE.length - 1);
+
+  const iap_token = getInput("iap_token");
+  const time_interval = getInput("time_interval");
+  const no_of_attempts = getInput("no_of_attempts");
+  const automation_id = getInput("automation_id");
+  let iap_instance = getInput("iap_instance");
+  if (iap_instance.endsWith('/'))
+    iap_instance = iap_instance.substring(0, iap_instance.length - 1);
+
   let count = 0;
 
+  //using the ea-utils library
+  const user = [
+    {
+      hostname: iap_instance,
+      username: '',
+      password: '',
+      token: iap_token
+    }
+  ]
+
+  const authentication = new ItentialSDK.Authentication(user); 
+  const opsManager = new ItentialSDK.OperationsManagerAPI(authentication.users[0].hostname, authentication.users[0].userKey, authentication);
+  const health = new ItentialSDK.HealthAPI(authentication.users[0].hostname, authentication.users[0].userKey, authentication);
+
   try {
-    //check the status of the job and return the output (IAP release <= 2021.1)
-    const jobStatus211 = (job_id) => {
-      get(
-        `${IAP_INSTANCE}/workflow_engine/job/${job_id}/details?token=` +
-          IAP_TOKEN
+   //check the status of the automation and return the output (IAP release <= 2021.1)
+    const automationStatus211 = (automation_id) => {
+      axios
+      .get(
+        `${iap_instance}/workflow_engine/job/${automation_id}/details?token=` +
+          iap_token
       )
         .then((res) => {
-          console.log("Job Status: ", res.data.status);
-
-          if (res.data.status === "running" && count < NO_OF_ATTEMPTS) {
+          console.log("Automation Status: ", res.data.status);
+          if (res.data.status === "running" && count < no_of_attempts) {
             setTimeout(() => {
               count += 1;
-              jobStatus211(job_id);
-            }, TIME_INTERVAL * 1000);
+              automationStatus211(automation_id);
+            }, time_interval * 1000);
           } else if (res.data.status === "complete") {
-            get(
-              `${IAP_INSTANCE}/workflow_engine/job/${job_id}/output?token=` +
-                IAP_TOKEN
+            axios
+            .get(
+              `${iap_instance}/workflow_engine/job/${automation_id}/output?token=` +
+                iap_token
             )
               .then((res) => {
                 setOutput("results", res.data.variables);
@@ -38,12 +56,12 @@ async function run() {
                 setFailed(err.response.data);
               });
           } else if (res.data.status === "canceled") {
-            setFailed("Job Canceled");
+            setFailed("Automation Canceled");
           } else if (res.data.status === "error") {
             setFailed(res.data.error);
           } else {
             setFailed(
-              'Job Timed out based upon user defined TIME_INTERVAL and NO_OF_ATTEMPTS'
+              'Automation Timed out based upon user defined time_interval and no_of_attempts'
             );
           }
         })
@@ -51,55 +69,85 @@ async function run() {
           setFailed(err.response.data);
         });
     };
+    
+    //check the status of the automation and return the output (IAP release > 2021.1)
+    const automationStatus221 = (automation_id) => {
 
-    //check the status of the job and return the output (IAP release > 2021.1)
-    const jobStatus221 = (job_id) => {
-      get(
-        `${IAP_INSTANCE}/operations-manager/jobs/${job_id}?token=` + IAP_TOKEN
-      )
-        .then((res) => {
-          console.log("Job Status: ", res.data.data.status);
-          if (res.data.data.status === "running" && count < NO_OF_ATTEMPTS) {
+      opsManager.getAutomationResult(automation_id, (res,err) => {
+
+        if (err){
+          if (typeof err === "string") {
+            setFailed(err);
+          } else if(typeof err.response === "object") {
+            setFailed(err.response.data);
+          } else setFailed(`Failed while getting automation result:Please check the instance configuration and credentials. 
+          An Itential account is required to get credentials needed to configure the Github Actions.
+          In order to utilize this action, you would need to have an active \`Itential Automation Platform\` (IAP).
+          If you are an existing customer, please contact your Itential account team for additional details.
+          For new customers interested in an Itential trial, please click [here](https://www.itential.com/get-started/) to request one.`);
+
+        } else {
+          console.log("Automation Status: ", res.status);
+          if (res.status === "running" && count < no_of_attempts) {
+            console.log("Attempt# ", count);
             setTimeout(() => {
               count += 1;
-              jobStatus221(job_id);
-            }, TIME_INTERVAL * 1000);
-          } else if (res.data.data.status === "complete") {
-            setOutput("results", res.data.data.variables);
-          } else if (res.data.data.status === "canceled") {
-            setFailed("Job Canceled");
-          } else if (res.data.data.status === "error") {
-            setFailed(res.data.data.error);
+              automationStatus221(automation_id);
+            }, time_interval * 1000);
+          } else if (res.status === "complete") {
+            setOutput("results", res.variables);
+          } else if (res.status === "canceled") {
+            setFailed("Automation Canceled");
+          } else if (res.status === "error") {
+            setFailed(res.error);
           } else {
             setFailed(
-              'Job Timed out based upon user defined TIME_INTERVAL and NO_OF_ATTEMPTS'
+              'Automation Timed out based upon user defined time_interval and no_of_attempts'
             );
           }
-        })
-        .catch((err) => {
-          setFailed(err.response.data);
-        });
+
+        }
+      })
     };
 
-    //start the job on GitHub event
-    const startJob = () => {
-      get(`${IAP_INSTANCE}/health/server?token=` + IAP_TOKEN)
-        .then((res) => {
-          const release = res.data.release.substring(
+    //start the automation on GitHub event
+    const startAutomation = () => {
+
+      health.getServerHealth((res, err)=> {
+
+        console.log("Checked the Server health");
+
+        if(err){
+          if(typeof err === "string"){
+           setFailed(err);
+          } else if(typeof err.response === "object") {
+            setFailed(err.response.data);
+          } else setFailed(`Failed while checking server health: Please check the instance configuration and credentials. 
+          An Itential account is required to get credentials needed to configure the Github Actions.
+          In order to utilize this action, you would need to have an active \`Itential Automation Platform\` (IAP).
+          If you are an existing customer, please contact your Itential account team for additional details.
+          For new customers interested in an Itential trial, please click [here](https://www.itential.com/get-started/) to request one.`);
+
+        } else {
+
+          const release = res.release.substring(
             0,
-            res.data.release.lastIndexOf(".")
+            res.release.lastIndexOf(".")
           );
-          if (Number(release) <= 2021.1) jobStatus211(JOB_ID);
-          else jobStatus221(JOB_ID);
-        })
-        .catch((err) => {
-          setFailed(err);
-        });
+
+          if (Number(release) <= 2021.1) automationStatus211(automation_id);
+          else automationStatus221(automation_id);
+
+        }
+
+      });
+
     };
 
-    startJob();
-  } catch (e) {
-    setFailed(e);
+    startAutomation();
+
+  } catch (err) {
+    setFailed(err);
   }
 }
 

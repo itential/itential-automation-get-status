@@ -1,4 +1,4 @@
-# Itential Automation Status
+# Itential Automation Get-Status
 
 Github Action to monitor Itential Automation Platform (IAP) automations status and return output variables.
 
@@ -106,7 +106,7 @@ jobs:
         uses: actions/checkout@v3
       - name: Get Automation status action step
         id: step1
-        uses: itential/itential-automation-status@version
+        uses: itential/itential-automation-get-status@version
         with:
           iap_token: ${{secrets.IAP_TOKEN}}
           iap_instance: ${{secrets.IAP_INSTANCE}}

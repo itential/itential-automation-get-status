@@ -1,4 +1,4 @@
-name: 'itential-automation-status'
+name: 'itential-automation-get-status'
 description: 'Action to monitor Itential Automation Platform(IAP) automations status and return output variables'
 author: 'Itential'
 branding:

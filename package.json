@@ -1,5 +1,5 @@
 {
-  "name": "itential-automation-status",
+  "name": "itential-automation-get-status",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -10,14 +10,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/itential/itential-automation-status.git"
+    "url": "git+https://github.com/itential/itential-automation-get-status.git"
   },
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/itential/itential-automation-status/issues"
+    "url": "https://github.com/itential/itential-automation-get-status/issues"
   },
-  "homepage": "https://github.com/itential/itential-automation-status#readme",
+  "homepage": "https://github.com/itential/itential-automation-get-status#readme",
   "dependencies": {
     "@actions/core": "^1.10.0",
     "@actions/github": "^5.1.1",

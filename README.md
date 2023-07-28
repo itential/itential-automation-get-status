@@ -1,14 +1,15 @@
 # Itential Automation Get-Status
 
-Github Action to monitor Itential Automation Platform (IAP) automations status and return output variables.
+Github Action to monitor Itential automation status and return output variables.
 
 ## Table of Contents
 
 - [Prerequisites](#prerequisites)
-- [Supported IAP Versions](#supported-iap-versions)
+- [Supported Itential Automation Platform Versions](#supported-itential-automation-platform-versions)
 - [Getting Started](#getting-started)
 - [Configurations](#configurations)
   - [Required Input Parameters](#required-input-parameters)
+  - [Required Authentication Parameters](#required-authentication-parameters)
   - [Optional Input Parameters](#optional-input-parameters)
   - [Output](#output)
 - [Example Usage](#example-usage)
@@ -16,11 +17,11 @@ Github Action to monitor Itential Automation Platform (IAP) automations status a
 ## Prerequisites
 
 An Itential account is required to get credentials needed to configure the Github Actions.
-In order to utilize this action, you would need to have an active `Itential Automation Platform` (IAP).\
+In order to utilize this action, you would need to have an active `Itential Automation Platform` (IAP) / `Itential Cloud` instance.\
 If you are an existing customer, please contact your Itential account team for additional details.
 For new customers interested in an Itential trial, please click [here](https://www.itential.com/get-started/) to request one.
 
-## Supported IAP Versions 
+## Supported Itential Automation Platform Versions 
 
 * 2023.1
 * 2022.1
@@ -47,17 +48,51 @@ For new customers interested in an Itential trial, please click [here](https://w
   For SECRET enter your desired variable.
 5. Click "Add Secret"
 
+_For more information about Github Actions variables, see [variables](https://docs.github.com/en/actions/learn-github-actions/variables)_
+
+## Configurations
+
 See [action.yml](action.yml) for [metadata](https://docs.github.com/en/actions/creating-actions/metadata-syntax-for-github-actions) that defines the inputs, outputs, and runs configurations for this action.\_
+
+_For more information about connecting to private network, see [Connecting to a private network](https://docs.github.com/en/actions/using-github-hosted-runners/connecting-to-a-private-network)_
+
 
 ### Required Input Parameters
 
-The following table defines the required parameters to monitor IAP Automation Status using a Github workflow. Input data is provided through Github Actions secrets. For more information about github action secrets, see [Github Secrets](https://docs.github.com/en/rest/actions/secrets?apiVersion=2022-11-28)
+The following table defines the required parameters to monitor Itential Automation Status using a Github workflow. Input data is provided through Github Actions secrets. For more information about github action secrets, see [Github Secrets](https://docs.github.com/en/rest/actions/secrets?apiVersion=2022-11-28)
 
-| Parameter     | Description                                     |
-| ------------- | ----------------------------------------------- |
-| iap_instance  | URL to the IAP Instance                         |
-| iap_token     | To authenticate API requests to the instance    |
-| automation_id | Automation ID to check status of the automation |
+| Parameter         | Description                                     |
+| ------------------| ----------------------------------------------- |
+| itential_host_url | URL to the Itential Instance                         |
+| automation_id     | Automation ID to check status of the automation |
+
+### Required Authentication Parameters
+
+There are three methods for authenticating API requests to the Itential instance.The following tables describe the required parameters for each authentication method.Based on the available credentials input the appropriate parameters. By default, all the authentication parameters are set to empty string.
+
+#### Static Token
+The provided Static token will be used in all subsequent API calls to the Itential instance 
+
+| Parameter         | Description                                      |
+| ----------------- | ------------------------------------------------ |
+| auth_token        |  Itential Authentication Token                   |
+
+#### Basic Token 
+The provided username and password is used to request a token that will be used in all subsequent API calls to the Itential instance . 
+
+| Parameter         | Description                                      |
+| ----------------- | ------------------------------------------------ |
+| auth_username     | Itential Authentication Username                 |
+| auth_password     | Itential Authentication Password                 |
+
+#### Oauth2 Client Credentials
+The provided client credentials are used to request a token that will be used in all subsequent API calls to the Itential instance .
+
+| Parameter         | Description                                       |
+| ----------------- | --------------------------------------------------|
+| auth_client_id    | Itential Authentication Client ID                 |
+| auth_client_secret| Itential Authentication Client Secret             |
+
 
 ### Optional Input Parameters
 
@@ -85,6 +120,8 @@ You have the option to configure any filters you may want to add, such as only t
 
 _For more information about workflows, see [Using workflows](https://docs.github.com/en/actions/using-workflows)._
 
+`Github Workflow example `
+
 ```yaml
 # This is a basic workflow to help you get started with Actions
 name: Get Automation Status on pull request
@@ -108,8 +145,12 @@ jobs:
         id: step1
         uses: itential/itential-automation-get-status@version
         with:
-          iap_token: ${{secrets.IAP_TOKEN}}
-          iap_instance: ${{secrets.IAP_INSTANCE}}
+          itential_host_url: ${{secrets.ITENTIAL_HOST_URL}}
+          auth_token: ${{secrets.AUTH_TOKEN}}
+          auth_username: ${{secrets.AUTH_USERNAME}}
+          auth_password: ${{secrets.AUTH_PASSWORD}}
+          auth_client_id: ${{secrets.AUTH_CLIENT_ID}}
+          auth_client_secret: ${{secrets.AUTH_CLIENT_SECRET}}
           automation_id: ${{secrets.AUTOMATION_ID}}
           no_of_attempts: 10
           time_interval: 15

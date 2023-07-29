@@ -1,4 +1,4 @@
-# Itential Automation Get-Status
+# Itential Automation Get Status
 
 Github Action to monitor Itential automation status and return output variables.
 

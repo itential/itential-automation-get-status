@@ -5,7 +5,7 @@ branding:
   icon: 'activity'
   color: 'blue'
 inputs:
- itential_host_url:
+  itential_host_url:
     description: 'Itential instance url'
     required: true
   auth_token:

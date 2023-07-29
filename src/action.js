@@ -9,7 +9,6 @@ async function run() {
   const auth_password = getInput("auth_password");
   const auth_client_id = getInput("auth_client_id");
   const auth_client_secret = getInput("auth_client_secret");
-  const auth_grant_type = "client_credentials";
   const time_interval = getInput("time_interval");
   const no_of_attempts = getInput("no_of_attempts");
   const automation_id = getInput("automation_id");
@@ -26,7 +25,6 @@ async function run() {
       password: auth_password,
       client_id: auth_client_id,
       client_secret: auth_client_secret,
-      grant_type: auth_grant_type,
       token: auth_token
     }
   ]

@@ -145,6 +145,7 @@ jobs:
         id: step1
         uses: itential/itential-automation-get-status@version
         with:
+          #github_token: ${{secrets.GITHUB_TOKEN}} # include only if user requires a GitHub Token
           itential_host_url: ${{secrets.ITENTIAL_HOST_URL}}
           auth_token: ${{secrets.AUTH_TOKEN}}
           auth_username: ${{secrets.AUTH_USERNAME}}

@@ -30,8 +30,12 @@ jobs:
         id: step1
         uses: ./
         with:
-          iap_token: ${{secrets.IAP_TOKEN}}
-          iap_instance: ${{secrets.IAP_INSTANCE}}
+          itential_host_url: ${{secrets.ITENTIAL_HOST_URL}}
+          auth_token: ${{secrets.AUTH_TOKEN}}
+          auth_username: ${{secrets.AUTH_USERNAME}}
+          auth_password: ${{secrets.AUTH_PASSWORD}}
+          auth_client_id: ${{secrets.AUTH_CLIENT_ID}}
+          auth_client_secret: ${{secrets.AUTH_CLIENT_SECRET}}
           time_interval: 1
           no_of_attempts: 200
           automation_id: ${{secrets.AUTOMATION_ID}}

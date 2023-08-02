@@ -33,11 +33,12 @@ For new customers interested in an Itential trial, please click [here](https://w
 1. Search for the Action on Github Marketplace.
 2. Select the "Use the Latest Version" option on the top right of the screen.
 3. Click the clipboard icon to copy the provided data.
-  Sample 
-  ```
-  - name: itential-automation-start
-  uses: itential/itential-automation-start@0.0.1
-  ```
+   
+    Sample 
+    ```
+    - name: itential-automation-start
+    uses: itential/itential-automation-start@0.0.1
+    ```
 4. Navigate to the '.github/workflows' folder in the target repository (where you intend on using the action).
 5. Paste the copied data in the correlating fields of your workflow file.
 7. Configure the required inputs and optional inputs. (See Note and [Configurations](#configurations))
